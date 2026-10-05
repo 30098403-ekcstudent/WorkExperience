@@ -5,8 +5,8 @@ function App() {
   const [DOM2Text, setDOM2Text] = useState("DOM2 code affects me!");
   const [coffeeData, setCoffeeData] = useState([]);
   function myFunction(){
-    setDOM1Text("DOM1 Code works!");
-    setDOM2Text("DOM2 Code works!");
+    setDOM1Text("DOM1 code works!");
+    setDOM2Text("DOM2 code works!");
   }
   const baseURL = 'https://api.sampleapis.com/coffee/hot';
   useEffect(() => {
