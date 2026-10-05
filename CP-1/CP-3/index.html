@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>JavaScript Click Test</title>
+      <script>
+        function myFunction() {
+          document.getElementById("DOM1").innerHTML = "DOM1 Code works!";
+          document.getElementById("DOM2").innerHTML = "DOM2 Code works!";
+        }
+      </script>
+      <script>
+        const baseURL = 'https://api.sampleapis.com/coffee/hot';
+        fetch(baseURL)
+          .then(resp => resp.json())
+          .then(data => displayData(data));
+
+        function displayData(data) {
+          console.log(data);
+          var table = "<tr><th>Beverage</th><th> Ingredients</th><th>Description</th></tr>";
+          for (var i=0; i<data.length; i++){
+            var newrow = "";
+            newrow = newrow + "<tr>";
+            newrow = newrow + "<td>" + data[i].title + "</td>";
+            newrow = newrow + "<td>" + data[i].ingredients + "</td>";
+            newrow = newrow + "<td>" + data[i].description + "</td>";
+            newrow = newrow + "</tr>";
+            table = table + newrow;
+          }
+          document.querySelector("#coffeetable").innerHTML = table;
+        }
+        </script>
+    </head>
+    <body>
+      <div class="box-content">
+        <p id="DOM1">DOM1 code affects me!</p>
+        <p id="DOM2">DOM2 code affects me!</p>
+        <button type="button" onclick="myFunction()">Press me!</button>
+      </div>
+      <div>
+        <br><br>
+        <table id="coffeetable">
+
+        </table>
+      </div>
+    </body>
+</html>
