@@ -1,3 +1,4 @@
+import Navbar from "./components/Navbar";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <>
+      <Navbar />
       <div className="box-content">
         <p id="DOM1">{DOM1Text}</p>
         <p id="DOM2">{DOM2Text}</p>
