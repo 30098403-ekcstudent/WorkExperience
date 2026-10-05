@@ -2,11 +2,16 @@
 <html lang="">
     <head>
         <title>JavaScript Click Test</title>
+        <script>
+            function myFunction() {
+              document.getElementById("DOM1").innerHTML = "DOM1 Code works!";
+              document.getElementById("DOM2").innerHTML = "DOM2 Code works!";
+            }
+        </script>
     </head>
     <body>
         <p id="DOM1">DOM1 code affects me!</p>
         <p id="DOM2">DOM2 code affects me!</p>
-        <button id="button" type="button">Press me!</button>
-        <script src="index.js"></script>
+        <button type="button" onclick="myFunction()">Press me!</button>
     </body>
 </html>
