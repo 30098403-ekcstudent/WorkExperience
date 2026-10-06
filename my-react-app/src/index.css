@@ -74,7 +74,8 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 40px;
+  color: #9ca3af;
   letter-spacing: -1.68px;
   margin: 32px 0;
   @media (max-width: 1024px) {
@@ -108,4 +109,63 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+.navbar {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #252731;
+  }
+
+  ul li {
+    float: left;
+    background-color: #343743;
+  }
+
+  .right {
+    float: right;
+  }
+
+  ul li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  ul li a:hover {
+    background-color: #111111;
+  }
+}
+
+.signbox {
+  form {
+    color: #d1d5db;
+    margin: 10px auto;
+    text-align: center;
+    display: block;
+    border-radius: 8px;
+    background-color: #343743;
+    border-style: solid;
+    border-color: #2b2d36;
+    width: fit-content;
+    padding: 10px
+  }
+}
+
+.textbox {
+  background-color: #252731;
+  border: 2px solid #2b2d36;
+  border-radius: 8px;
+}
+
+.button {
+  color: #d1d5db;
+  background-color: #252731;
+  border: 2px solid #2b2d36;
+  border-radius: 8px;
 }

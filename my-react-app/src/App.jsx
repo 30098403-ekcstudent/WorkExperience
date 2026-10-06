@@ -1,5 +1,8 @@
 import Navbar from "./components/Navbar";
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/login";
+import Signup from "./pages/signup";
 
 function App() {
   const [DOM1Text, setDOM1Text] = useState("DOM1 code affects me!");
@@ -16,33 +19,40 @@ function App() {
       .then(data => setCoffeeData(data));
   }, [])
 
-
-
   return (
-    <>
+    <BrowserRouter>
       <Navbar />
-      <div className="box-content">
-        <p id="DOM1">{DOM1Text}</p>
-        <p id="DOM2">{DOM2Text}</p>
-        <button type="button" onClick={myFunction}>Press me!</button>
-      </div>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <div className="box-content">
+              <p id="DOM1">{DOM1Text}</p>
+              <p id="DOM2">{DOM2Text}</p>
+              <button type="button" onClick={myFunction}>Press me!</button>
+            </div>
 
-      <table id="coffeetable">
-        <tbody>
-          {coffeeData.map(coffee => (
-            <tr key={coffee.id}>
-              <td>{coffee.title}</td>
-              <td>
-                {typeof coffee.ingredients === "string"
-                  ? coffee.ingredients
-                  : Object.values(coffee.ingredients).join(", ")}
-              </td>
-              <td>{coffee.description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
+            <table id="coffeetable">
+              <tbody>
+                {coffeeData.map(coffee => (
+                  <tr key={coffee.id}>
+                    <td>{coffee.title}</td>
+                    <td>
+                      {typeof coffee.ingredients === "string"
+                        ? coffee.ingredients
+                        : Object.values(coffee.ingredients).join(", ")}
+                    </td>
+                    <td>{coffee.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        } />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </BrowserRouter>
   );
 
 }
