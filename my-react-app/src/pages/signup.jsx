@@ -5,35 +5,61 @@ function Signup () {
   const [confPassword, setConfPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  function handleSubmit(e) {
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (username === "" || password === "" || confPassword === "") {
-      setMessage("Fields cannot be blank.")
-      console.log("blank field");
-      return;
-    }
-    if (password !== confPassword) {
-      setMessage("Passwords must be identical.");
-      console.log("mismatched passwords");
-      return;
-    }
-    else {
-      console.log("passwords identical");
+    const errors = [];
+
+    if (username.trim() === "" || password === "" || confPassword === "") {
+      errors.push("Fields cannot be blank.");
     }
 
-    fetch("http://localhost:3000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+    if (password !== confPassword) {
+      errors.push("Passwords must be identical.");
+    }
+
+    if (username.trim() !== "") {
+      try {
+        const checkResponse = await fetch("http://localhost:3000/check-username", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ username })
+        });
+
+        if (!checkResponse.ok) {
+          errors.push(await checkResponse.text());
+        }
+      } catch {
+        setMessage("Could not contact the server.");
+        return;
+      }
+    }
+
+    if (errors.length > 0) {
+      setMessage(errors.join("\n"));
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
-      body: JSON.stringify({
-        username: username,
-        password: password
-      })
-    })
-    .then(response => response.text())
-    .then(data => console.log(data))
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      });
+
+      const data = await response.text();
+      setMessage(data);
+    } catch {
+      setMessage("Could not contact the server.");
+    }
   }
 
   return (
@@ -51,7 +77,7 @@ function Signup () {
         value={confPassword} onChange={(e) => setConfPassword(e.target.value)}/><br/>
         <button className="button" type="submit">Sign Up</button>
       </form>
-      <p>{message}</p>
+      <p style={{ whiteSpace: "pre-line" }}>{message}</p>
     </div>
   )
 }

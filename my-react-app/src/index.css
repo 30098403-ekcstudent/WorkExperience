@@ -126,7 +126,10 @@ code {
   }
 
   .right {
+    color: white;
     float: right;
+    display: flex;
+    align-items: center;
   }
 
   ul li a {

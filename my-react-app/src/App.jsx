@@ -8,6 +8,9 @@ function App() {
   const [DOM1Text, setDOM1Text] = useState("DOM1 code affects me!");
   const [DOM2Text, setDOM2Text] = useState("DOM2 code affects me!");
   const [coffeeData, setCoffeeData] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
+
   function myFunction(){
     setDOM1Text("DOM1 code works!");
     setDOM2Text("DOM2 code works!");
@@ -19,9 +22,28 @@ function App() {
       .then(data => setCoffeeData(data));
   }, [])
 
+  useEffect(() => {
+    fetch("http://localhost:3000/me", {
+      credentials: "include"
+    })
+      .then(response => {
+        if (!response.ok) return null;
+        return response.json();
+      })
+      .then(data => {
+        if (data) setCurrentUser(data);
+      })
+      .catch(error => {
+        console.error("Could not check login status:", error);
+      });
+  }, []);
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar
+        user={currentUser}
+        onLogout={() => setCurrentUser(null)}
+      />
       <Routes>
         <Route path="/" element={
           <>
@@ -49,7 +71,7 @@ function App() {
           </>
         } />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
