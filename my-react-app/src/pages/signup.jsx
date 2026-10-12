@@ -8,10 +8,6 @@ function Signup () {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(username);
-    console.log(password);
-    console.log(confPassword);
-
     if (username === "" || password === "" || confPassword === "") {
       setMessage("Fields cannot be blank.")
       console.log("blank field");
