@@ -172,3 +172,17 @@ code {
   border: 2px solid #2b2d36;
   border-radius: 8px;
 }
+
+html {
+  overflow-y: scroll;
+}
+
+#coffeetable th,
+#coffeetable td {
+  border-style: solid;
+  border-color: #8a8c97;
+}
+
+#coffeetable {
+  border-collapse: collapse;
+}
