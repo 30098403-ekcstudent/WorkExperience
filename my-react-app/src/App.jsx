@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import NewNotes from "./pages/newnotes";
+import Notes from "./pages/notes";
 
 function App() {
   const [DOM1Text, setDOM1Text] = useState("DOM1 code affects me!");
@@ -73,6 +75,8 @@ function App() {
 
         <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/new-note" element={<NewNotes />} />
+        <Route path="/saved-notes" element={<Notes />} />
       </Routes>
     </BrowserRouter>
   );

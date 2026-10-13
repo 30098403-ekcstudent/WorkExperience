@@ -148,7 +148,7 @@ app.post("/signup", (req, res) => {
         db.execute(
           "INSERT INTO users (username, password_hash) VALUES (?, ?)",
           [username, hashedPassword],
-          (insertErr, results) => {
+          (insertErr) => {
             if (insertErr) {
               return res.status(500).send("Could not create account.");
             }
@@ -156,6 +156,103 @@ app.post("/signup", (req, res) => {
           }
         );
       });
+    }
+  );
+});
+
+app.post("/notes", (req, res) => {
+  const { title, content } = req.body;
+
+  if (
+    typeof title !== "string" ||
+    typeof content !== "string" ||
+    title.trim() === "" ||
+    content.trim() === ""
+  ) {
+    return res.status(400).send("Title and content are required.");
+  }
+
+  db.execute(
+    "INSERT INTO notes (title, content) VALUES (?, ?)",
+    [title.trim(), content.trim()],
+    (err, results) => {
+      if (err) {
+        console.error("Could not save note:", err);
+        return res.status(500).send("Could not save note.");
+      }
+
+      return res.status(201).json({
+        message: "Note saved successfully!",
+        id: results.insertId
+      });
+    }
+  );
+});
+
+
+app.get("/notes", (req, res) => {
+  db.execute(
+    "SELECT id, title, content FROM notes ORDER BY id DESC",
+    (err, results) => {
+      if (err) {
+        console.error("Could not retrieve notes:", err);
+        return res.status(500).send("Could not retrieve notes.");
+      }
+
+      return res.status(200).json(results);
+    }
+  );
+});
+
+app.delete("/notes/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.execute(
+    "DELETE FROM notes WHERE id = ?",
+    [id],
+    (err, results) => {
+      if (err) {
+        console.error("Could not delete note:", err);
+        return res.status(500).send("Could not delete note.");
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).send("Note not found.");
+      }
+
+      return res.status(200).send("Note deleted successfully!");
+    }
+  );
+});
+
+
+app.put("/notes/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+
+  if (
+    typeof title !== "string" ||
+    typeof content !== "string" ||
+    title.trim() === "" ||
+    content.trim() === ""
+  ) {
+    return res.status(400).send("Title and content are required.");
+  }
+
+  db.execute(
+    "UPDATE notes SET title = ?, content = ? WHERE id = ?",
+    [title.trim(), content.trim(), id],
+    (err, results) => {
+      if (err) {
+        console.error("Could not update note:", err);
+        return res.status(500).send("Could not update note.");
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).send("Note not found, or nothing changed.");
+      }
+
+      return res.status(200).send("Note updated successfully!");
     }
   );
 });

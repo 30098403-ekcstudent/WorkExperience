@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar({ user, onLogout }) {
@@ -21,11 +22,35 @@ function Navbar({ user, onLogout }) {
     }
   }
 
+  const [notesOpen, setNotesOpen] = useState(false);
+
   return (
     <nav className="navbar" id="the-navbar">
       <ul>
         <li><Link to="/">Home</Link></li>
+        <li className="dropdown">
+          <button
+            type="button"
+            onClick={() => setNotesOpen(!notesOpen)}
+          >
+            Notes ▾
+          </button>
 
+          {notesOpen && (
+            <ul className="dropdown-menu">
+              <li>
+                <Link to="/new-note" onClick={() => setNotesOpen(false)}>
+                  New note
+                </Link>
+              </li>
+              <li>
+                <Link to="/saved-notes" onClick={() => setNotesOpen(false)}>
+                  Saved notes
+                </Link>
+              </li>
+            </ul>
+          )}
+        </li>
         {user ? (
           <li className="right">
             Welcome, {user.username}!
