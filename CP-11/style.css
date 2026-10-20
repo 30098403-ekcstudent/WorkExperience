@@ -1,0 +1,30 @@
+body {
+    font-family: Arial;
+    background-color: dodgerblue;
+    text-align: center;
+    padding: 30px;
+}
+input {
+    padding: 12px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    background-color: forestgreen;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
+
+ul {
+    list-style-position: inside;
+    padding: 0;
+}

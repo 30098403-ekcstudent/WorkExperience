@@ -1,0 +1,79 @@
+<DOCTYPE html>
+<html>
+<head>
+    <title>My Database Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>My Database Website</h1>
+
+    <h2>Enter your information</h2>
+
+    <input id="nameInput" placeholder="Your name">
+    <input id="carInput" placeholder="Favourite car">
+
+    <button onclick="saveData()">Save Data</button>
+    <button onclick="saveData()"> Load Saved Data</button>
+
+    <p id="message"></p>
+
+    <h2>Saved Information</h2>
+    <ul id="savedList"></ul>
+
+    <script>
+        async function saveData() {
+            const name = document.getElementById("nameInput").value;
+            const car = document.getElementById("carInput").value;
+
+            try {
+                const response = await fetch("/save", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({name, car})
+                });
+
+                if (!response.ok) {
+                    throw new Error("Could not save data");
+                }
+
+                document.getElementById("message").textContent =
+                    "Information saved successfully!";
+
+                loadData();
+            } catch (error) {
+                document.getElementById("message").textContent =
+                    error.message;
+            }
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch("/users");
+
+                if (!response.ok) {
+                    throw new Error("Could not load data");
+                }
+
+                const users = await response.json();
+                const list = document.getElementById("savedList");
+
+                list.innerHTML = "";
+
+                users.forEach(user => {
+                    const item = document.createElement("li");
+                    item.textContent =
+                        user.name + " - " + user.car;
+
+                    list.appendChild(item);
+                })
+            } catch (error) {
+                document.getElementById("message").textContent =
+                    error.message;
+            }
+        }
+
+            window.addEventListener("load", loadData);
+        </script>
+
+    </body>
+    </html>

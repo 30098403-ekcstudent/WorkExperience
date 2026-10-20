@@ -34,8 +34,8 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
+    --bg: #0b3041;
+    --border: #1d749a;
     --code-bg: #1f2028;
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
@@ -123,33 +123,33 @@ code {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: #252731;
+    background-color: #2387df;
     display: flow-root;
 
   }
 
   ul li {
     float: left;
-    background-color: #343743;
+    background-color: #2b99ff;
   }
 
   .right {
-    color: white;
     float: right;
     display: flex;
     align-items: center;
+    color: black
   }
 
   ul li a {
     display: block;
-    color: white;
+    color:black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
   }
 
   ul li a:hover {
-    background-color: #111111;
+    background-color: #58aeff;
   }
 
   .dropdown {
@@ -159,8 +159,8 @@ code {
   .dropdown > button {
     display: block;
     padding: 14px 16px;
-    color: white;
-    background-color: #343743;
+    color: black;
+    background-color: #2b99ff;
     border: none;
     border-radius: 0;
     font: inherit;
@@ -170,7 +170,7 @@ code {
   }
 
   .dropdown > button:hover {
-    background-color: #111111;
+    background-color: #58aeff;
   }
 
   .dropdown .dropdown-menu {
@@ -182,7 +182,7 @@ code {
     margin: 0;
     overflow: visible;
     z-index: 10;
-    background-color: #343743;
+    background-color: #6ab6ff;
   }
 
   .dropdown .dropdown-menu li {
@@ -219,9 +219,9 @@ code {
 
 .button {
   color: #d1d5db;
-  background-color: #252731;
-  border: 2px solid #2b2d36;
+  border: 2px solid white;
   border-radius: 8px;
+  background-color: #0079e8;
 }
 
 #coffeetable th,
@@ -242,8 +242,8 @@ code {
     text-align: center;
     display: block;
     border-radius: 8px;
-    background-color: #343743;
-    border: solid #2b2d36;
+    background-color: #2387df;
+    border: 3px solid white;
     width: fit-content;
     padding: 10px;
   }
@@ -254,6 +254,8 @@ code {
     height: 30px;
     max-width: 100%;
     margin-bottom: 10px;
+    background-color: #0079e8;
+    border-color: white;
   }
 
   .note-content {
@@ -262,13 +264,14 @@ code {
     resize: vertical;
   }
 }
+
 .note-card {
   margin: 15px auto;
   padding: 15px;
   width: 400px;
   max-width: 90%;
-  background-color: #343743;
-  border: 2px solid #2b2d36;
+  background-color: #2387df;
+  border: 3px solid white;
   border-radius: 8px;
   color: #d1d5db;
   text-align: left;
