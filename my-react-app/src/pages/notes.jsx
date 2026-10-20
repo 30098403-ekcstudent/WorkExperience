@@ -9,7 +9,9 @@ function Notes() {
   const [editContent, setEditContent] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/notes")
+    fetch("http://localhost:3000/notes", {
+      credentials: "include"
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error("Could not retrieve notes.");
@@ -32,7 +34,8 @@ function Notes() {
 
     try {
       const response = await fetch(`http://localhost:3000/notes/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -59,6 +62,7 @@ function Notes() {
     try {
       const response = await fetch(`http://localhost:3000/notes/${id}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },

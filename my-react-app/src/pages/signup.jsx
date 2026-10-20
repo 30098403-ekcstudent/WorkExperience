@@ -1,5 +1,5 @@
 import { useState } from "react";
-function Signup () {
+function Signup({ onSignup }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
@@ -46,6 +46,7 @@ function Signup () {
     try {
       const response = await fetch("http://localhost:3000/signup", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
@@ -57,6 +58,17 @@ function Signup () {
 
       const data = await response.text();
       setMessage(data);
+
+      if (response.ok) {
+        const userResponse = await fetch("http://localhost:3000/me", {
+          credentials: "include"
+        });``
+
+        if (userResponse.ok) {
+          const user = await userResponse.json();
+          onSignup(user);
+        }
+      }
     } catch {
       setMessage("Could not contact the server.");
     }

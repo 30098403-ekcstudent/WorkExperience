@@ -100,6 +100,15 @@ app.post("/login", (req, res) => {
   );
 });
 
+
+function requireLogin(req, res, next) {
+  if (!req.session.user) {
+    return res.status(401).send("Please log in first.");
+  }
+
+  next();
+}
+
 app.get("/me", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ message: "Not signed in." });
@@ -126,8 +135,6 @@ app.get("/", (req, res) => {
 
 app.post("/signup", (req, res) => {
   const { username, password } = req.body;
-
-
   db.execute(
     "SELECT id FROM users WHERE username = ?",
     [username],
@@ -152,7 +159,18 @@ app.post("/signup", (req, res) => {
             if (insertErr) {
               return res.status(500).send("Could not create account.");
             }
-            return res.status(201).send("Account created successfully!");
+
+            req.session.user = {
+              id: results.insertId,
+              username: username
+            };
+
+            req.session.save((sessionErr) => {
+              if (sessionErr) {
+                return res.status(500).send("Account created, but login failed.");
+              }
+              return res.status(201).send("Account created and logged in successfully!");
+            });
           }
         );
       });
@@ -160,8 +178,9 @@ app.post("/signup", (req, res) => {
   );
 });
 
-app.post("/notes", (req, res) => {
+app.post("/notes", requireLogin, (req, res) => {
   const { title, content } = req.body;
+  const userId = req.session.user.id;
 
   if (
     typeof title !== "string" ||
@@ -173,8 +192,8 @@ app.post("/notes", (req, res) => {
   }
 
   db.execute(
-    "INSERT INTO notes (title, content) VALUES (?, ?)",
-    [title.trim(), content.trim()],
+    "INSERT INTO notes (title, content, user_id) VALUES (?, ?, ?)",
+    [title.trim(), content.trim(), userId],
     (err, results) => {
       if (err) {
         console.error("Could not save note:", err);
@@ -190,9 +209,11 @@ app.post("/notes", (req, res) => {
 });
 
 
-app.get("/notes", (req, res) => {
+app.get("/notes", requireLogin, (req, res) => {
+  const userId = req.session.user.id;
   db.execute(
-    "SELECT id, title, content FROM notes ORDER BY id DESC",
+    "SELECT id, title, content FROM notes WHERE user_id = ? ORDER BY id DESC",
+    [userId],
     (err, results) => {
       if (err) {
         console.error("Could not retrieve notes:", err);
@@ -204,12 +225,13 @@ app.get("/notes", (req, res) => {
   );
 });
 
-app.delete("/notes/:id", (req, res) => {
+app.delete("/notes/:id", requireLogin, (req, res) => {
   const { id } = req.params;
+  const userId = req.session.user.id;
 
   db.execute(
-    "DELETE FROM notes WHERE id = ?",
-    [id],
+    "DELETE FROM notes WHERE id = ? AND user_id = ?",
+    [id, userId],
     (err, results) => {
       if (err) {
         console.error("Could not delete note:", err);
@@ -225,10 +247,10 @@ app.delete("/notes/:id", (req, res) => {
   );
 });
 
-
-app.put("/notes/:id", (req, res) => {
+app.put("/notes/:id", requireLogin, (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
+  const userId = req.session.user.id;
 
   if (
     typeof title !== "string" ||
@@ -240,8 +262,8 @@ app.put("/notes/:id", (req, res) => {
   }
 
   db.execute(
-    "UPDATE notes SET title = ?, content = ? WHERE id = ?",
-    [title.trim(), content.trim(), id],
+    "UPDATE notes SET title = ?, content = ? WHERE id = ? AND user_id = ?",
+    [title.trim(), content.trim(), id, userId],
     (err, results) => {
       if (err) {
         console.error("Could not update note:", err);

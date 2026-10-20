@@ -4,6 +4,7 @@ import { useState } from "react";
 function NewNotes() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [message, setMessage] = useState("");
 
 
 async function handleSubmit(event) {
@@ -11,6 +12,7 @@ async function handleSubmit(event) {
 
   try {
     const response = await fetch("http://localhost:3000/notes", {
+      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,12 +23,13 @@ async function handleSubmit(event) {
       })
     });
 
-    const data = await response.text();
+    const data = await response.json();
 
     if (response.ok) {
       console.log(data);
       setTitle("");
       setContent("");
+      setMessage(data.message);
     } else {
       console.error("Could not save note:", data);
     }
@@ -71,6 +74,7 @@ async function handleSubmit(event) {
           Save Note
         </button>
       </form>
+      <p>{message}</p>
     </div>
   );
 }

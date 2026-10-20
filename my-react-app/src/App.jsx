@@ -74,7 +74,7 @@ function App() {
         } />
 
         <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={<Signup onSignup={setCurrentUser} />}/>
         <Route path="/new-note" element={<NewNotes />} />
         <Route path="/saved-notes" element={<Notes />} />
       </Routes>
